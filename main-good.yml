@@ -17,7 +17,7 @@
   become: true
 
   roles:
-    - role: haproxy
+    - haproxy
     
 - name: deploy tomcat
   hosts: apps
@@ -25,7 +25,7 @@
   become: true
 
   roles:
-    - role: tomcat
+    - tomcat
 
 
 - name: deploy postgres
@@ -35,5 +35,5 @@
   hosts: appdbs
 
   roles:
-    - role: postgres
+    - postgres
 

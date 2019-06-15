@@ -1,0 +1,25 @@
+---
+# tasks file for postgres
+
+- name: install progress
+  yum:
+    name: postgresql-server
+    state: latest
+    
+- name: enable apache at boot
+  service:
+    name: postgresql
+    enabled: yes
+    
+- name: initilize postgres
+  command: postgresql-setup initdb
+  run_once: true
+  
+- name: initilize postgres some more
+  command: chkconfig postgresql on
+  run_once: true
+  
+- name: start postgres
+    service:
+      name: postgresql.service
+      state: started

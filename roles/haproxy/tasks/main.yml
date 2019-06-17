@@ -4,22 +4,21 @@
 
 - name: http
   package:
-    name: httpie
+    name: httpd
     state: latest
 - name: install HAProxy
-  yum:
-    name=haproxy state=latest
+  package:
+    name: haproxy 
+    state: latest
 - name: enable HAProxy
   service:
     name: haproxy
     state: started
 - name: configure haproxy
   template:
-    src: ./templates/haproxy.cfg.j2       ## need to check path
+    src: haproxy.cfg.j2
     dest: /etc/haproxy/haproxy.cfg
-- name: restart HAproxy
-  service:
-    name: haproxy
-    state: restarted
+  notify: restart HAproxy
+
 
 

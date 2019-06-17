@@ -5,21 +5,32 @@
   yum:
     name: postgresql-server
     state: latest
-    
-- name: enable apache at boot
+
+- name: start postgres
   service:
-    name: postgresql
-    enabled: yes
-    
+     name: postgresql
+     enabled: yes
+
+
+# test postgresql initialization    
+- name: check database initilization
+  command: postgresql-check-db-dir /var/lib/pgsql/data
+  register: check_db_output
+  changed_when: check_db_output == 1
+# command: postgresql-setup initdb
+  ignore_errors: yes
+
+- name: print check_db_output
+  debug:
+    msg: "{{ check_db_output }}"
+  
 - name: initilize postgres
-  command: postgresql-setup initdb
-  run_once: true
-  
-- name: initilize postgres some more
-  command: chkconfig postgresql on
-  run_once: true
-  
+#  command: chkconfig postgresql on
+  shell: postgresql-setup initdb
+  when: check_db_output.rc != 0
+ 
 - name: start postgres
   service:
     name: postgresql.service
     state: started
+
